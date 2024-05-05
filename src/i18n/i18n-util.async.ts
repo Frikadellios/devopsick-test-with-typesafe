@@ -6,27 +6,36 @@ import type { Locales, Translations } from './i18n-types.js'
 import { loadedFormatters, loadedLocales, locales } from './i18n-util.js'
 
 const localeTranslationLoaders = {
-	de: () => import('./de/index.js'),
-	en: () => import('./en/index.js'),
-	es: () => import('./es/index.js'),
-	fr: () => import('./fr/index.js'),
-	nl: () => import('./nl/index.js'),
-	ru: () => import('./ru/index.js'),
-	uk: () => import('./uk/index.js'),
+  de: () => import('./de'),
+  en: () => import('./en'),
+  es: () => import('./es'),
+  fr: () => import('./fr'),
+  nl: () => import('./nl'),
+  ru: () => import('./ru'),
+  uk: () => import('./uk'),
 }
 
-const updateDictionary = (locale: Locales, dictionary: Partial<Translations>): Translations =>
-	loadedLocales[locale] = { ...loadedLocales[locale], ...dictionary }
+const updateDictionary = (
+  locale: Locales,
+  dictionary: Partial<Translations>,
+): Translations =>
+  // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
+  (loadedLocales[locale] = { ...loadedLocales[locale], ...dictionary })
 
-export const importLocaleAsync = async (locale: Locales): Promise<Translations> =>
-	(await localeTranslationLoaders[locale]()).default as unknown as Translations
+export const importLocaleAsync = async (
+  locale: Locales,
+): Promise<Translations> =>
+  (await localeTranslationLoaders[locale]()).default as unknown as Translations
 
 export const loadLocaleAsync = async (locale: Locales): Promise<void> => {
-	updateDictionary(locale, await importLocaleAsync(locale))
-	loadFormatters(locale)
+  updateDictionary(locale, await importLocaleAsync(locale))
+  loadFormatters(locale)
 }
 
-export const loadAllLocalesAsync = (): Promise<void[]> => Promise.all(locales.map(loadLocaleAsync))
+// biome-ignore lint/suspicious/noConfusingVoidType: <explanation>
+export const loadAllLocalesAsync = (): Promise<void[]> =>
+  Promise.all(locales.map(loadLocaleAsync))
 
 export const loadFormatters = (locale: Locales): void =>
-	void (loadedFormatters[locale] = initFormatters(locale))
+  // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
+  void (loadedFormatters[locale] = initFormatters(locale))

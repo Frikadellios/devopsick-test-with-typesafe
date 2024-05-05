@@ -5,32 +5,33 @@ import { initFormatters } from './formatters.js'
 import type { Locales, Translations } from './i18n-types.js'
 import { loadedFormatters, loadedLocales, locales } from './i18n-util.js'
 
-import de from './de/index.js'
-import en from './en/index.js'
-import es from './es/index.js'
-import fr from './fr/index.js'
-import nl from './nl/index.js'
-import ru from './ru/index.js'
-import uk from './uk/index.js'
+import de from './de'
+import en from './en'
+import es from './es'
+import fr from './fr'
+import nl from './nl'
+import ru from './ru'
+import uk from './uk'
 
 const localeTranslations = {
-	de,
-	en,
-	es,
-	fr,
-	nl,
-	ru,
-	uk,
+  de,
+  en,
+  es,
+  fr,
+  nl,
+  ru,
+  uk,
 }
 
 export const loadLocale = (locale: Locales): void => {
-	if (loadedLocales[locale]) return
+  if (loadedLocales[locale]) return
 
-	loadedLocales[locale] = localeTranslations[locale] as unknown as Translations
-	loadFormatters(locale)
+  loadedLocales[locale] = localeTranslations[locale] as unknown as Translations
+  loadFormatters(locale)
 }
 
 export const loadAllLocales = (): void => locales.forEach(loadLocale)
 
 export const loadFormatters = (locale: Locales): void =>
-	void (loadedFormatters[locale] = initFormatters(locale))
+  // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
+  void (loadedFormatters[locale] = initFormatters(locale))

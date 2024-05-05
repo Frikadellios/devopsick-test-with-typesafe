@@ -1,0 +1,23 @@
+---
+// code fences
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"a">;
+
+const { href, class: className, ...props } = Astro.props;
+
+const { pathname } = Astro.url;
+const subpath = pathname.match(/[^\/]+/g);
+const isActive = href === pathname || href === `/${subpath?.[0]}`;
+---
+
+<li class="inline-block">
+  <a
+    href={href}
+    class="no-underline [&.active]:underline [&.active]:font-bold p-2"
+    class:list={[className, { active: isActive }]}
+    {...props}
+  >
+    <slot />
+  </a>
+</li>

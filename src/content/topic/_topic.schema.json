@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "en",
+        "es",
+        "uk",
+        "ru",
+        "de",
+        "fr",
+        "nl"
+      ]
+    }
+  },
+  "required": [
+    "title"
+  ],
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

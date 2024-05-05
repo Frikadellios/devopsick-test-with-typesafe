@@ -1,64 +1,57 @@
-import { ui } from './ui'
+import type { Context } from '@/types'
+import type { Locales } from '@/i18n/i18n-types'
+import { detectLocale, isLocale } from '@/i18n/i18n-util'
+import {
+	initRequestParametersDetector,
+	initAcceptLanguageHeaderDetector
+} from 'typesafe-i18n/detectors'
 
-export const LANGUAGES = {
-  en: 'English',
-  fr: 'Français',
-  es: 'Español',
-  ru: 'Русский',
-  uk: 'Українська',
-  de: 'German',
+export const languages = {
+    en: 'English',
+    fr: 'Français',
+    es: 'Español',
+    ru: 'Русский',
+    uk: 'Українська',
+    de: 'German',
+    nl: 'Neitherland',
 }
 
-export const DEFAULT_LANG = 'en'
-
-export type UiType = keyof typeof ui
-
-export function getLangFromUrl(url: URL) {
-  const [, lang] = url.pathname.split('/')
-  if (lang in ui) return lang as UiType
-  return DEFAULT_LANG
+export const getLocaleFromUrl = (pathname: string): Locales | undefined => {
+	const [, locale] = pathname.split('/')
+	const _locale = locale.toLowerCase()
+	if (isLocale(_locale)) return _locale.toLowerCase() as Locales
+	return undefined
 }
 
-export function useTranslations(lang?: UiType) {
-  return function t<T extends keyof (typeof ui)[typeof DEFAULT_LANG]>(
-    key: T,
-    ...args: string[]
-  ) {
-    const translation = ui[lang ?? DEFAULT_LANG][key] || ui[DEFAULT_LANG][key]
-    const formattedTranslation = args.reduce((acc, arg, index) => {
-      return acc.replace(`{${index}}`, arg)
-    }, translation)
-    return formattedTranslation as (typeof ui)[typeof DEFAULT_LANG][T]
-  }
+export const getLocaleFromCookie = (context: Context): Locales | undefined => {
+	const _locale = context.cookies.get('locale')?.value
+	if (!_locale) return undefined
+	const locale = _locale.toLowerCase()
+	if (isLocale(locale)) return locale.toLowerCase() as Locales
+	return undefined
 }
 
-export function pathNameIsInLanguage(pathname: string, lang: UiType) {
-  return (
-    pathname.startsWith(`/${lang}`) ||
-    (lang === DEFAULT_LANG && !pathNameStartsWithLanguage(pathname))
-  )
+export const getLocale = (context: Context): Locales => {
+	let locale = getLocaleFromUrl(context.url.pathname)
+	if (locale) return locale
+
+	locale = getLocaleFromCookie(context)
+	if (locale) return locale
+
+	return getPreferredLocale(context)
 }
 
-function pathNameStartsWithLanguage(pathname: string) {
-  let startsWithLanguage = false
-  const languages = Object.keys(LANGUAGES)
+export const getPreferredLocale = (context: Context): Locales => {
+	const resuest = context.request
+	const params = context.params as Record<string, string>
 
-  for (let i = 0; i < languages.length; i++) {
-    const lang = languages[i]
-    if (pathname.startsWith(`/${lang}`)) {
-      startsWithLanguage = true
-      break
-    }
-  }
+	const requestParametersDetector = initRequestParametersDetector(
+		{ ...resuest, params },
+		'locale'
+	)
 
-  return startsWithLanguage
-}
+	const headers = { get: (key: string) => resuest.headers.get(key) }
+	const acceptLanguageDetector = initAcceptLanguageHeaderDetector({ headers })
 
-export function getLocalizedPathname(pathname: string, lang: UiType) {
-  if (pathNameStartsWithLanguage(pathname)) {
-    const availableLanguages = Object.keys(LANGUAGES).join('|')
-    const regex = new RegExp(`^\/(${availableLanguages})`)
-    return pathname.replace(regex, `/${lang}`)
-  }
-  return `/${lang}${pathname}`
+	return detectLocale(requestParametersDetector, acceptLanguageDetector)
 }

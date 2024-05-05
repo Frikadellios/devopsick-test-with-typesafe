@@ -1,7 +1,4 @@
 ---
-import { getLocale } from "astro-i18n-aut";
-
-const locale = getLocale(Astro.url);
 
 interface Props {
 	date: Date;
@@ -9,8 +6,8 @@ interface Props {
 }
 
 const { date, includeTime } = Astro.props;
+const locale = Astro.currentLocale || Intl.DateTimeFormat().resolvedOptions().locale;
 ---
-
 <time datetime={date.toISOString()}>
 	{
 		date.toLocaleDateString(locale, {

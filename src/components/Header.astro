@@ -1,0 +1,70 @@
+---
+// code fences
+import HeaderLink from "./HeaderLink.astro";
+import SignOutForm from "./SignOutForm";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { getSession } from "../auth";
+const { i18n } = Astro.props;
+
+const locale = Astro.currentLocale;
+// biome-ignore lint/suspicious/noDoubleEquals: <explanation>
+const otherLocale = locale == "en" ? "fr" : "en";
+
+const url = Astro.url.pathname;
+const translatedpath = `/${otherLocale + url.substring(3)}`;
+
+const homeURL = getRelativeLocaleUrl(`${locale}`);
+const aboutURL = getRelativeLocaleUrl(`${locale}`, "about");
+const secretURL = getRelativeLocaleUrl(`${locale}`, "secret");
+const signinURL = getRelativeLocaleUrl(`${locale}`, "signin");
+
+const language = i18n.t("commons.language");
+const signOutComponentTranslations = i18n.t("strings.signout.component");
+
+const session = await getSession(Astro);
+console.log("header session", session);
+---
+
+<header>
+  <nav>
+    <section class="bg-slate-50">
+      <div class="md:container md:mx-auto px-4 py-10">
+        <h2>
+          <a href={`/${locale}`}>{i18n.t("commons.project-name", { language })}</a>
+        </h2>
+
+        <div>
+          <ul class="inline-block mt-12">
+            <HeaderLink href={homeURL}
+              >{i18n.t("strings.index.menu-name")}</HeaderLink
+            >
+            <HeaderLink href={aboutURL}
+              >{i18n.t("strings.about.menu-name")}</HeaderLink
+            >
+            <HeaderLink href={secretURL}
+              >{i18n.t("strings.secret.menu-name")}</HeaderLink
+            >
+          </ul>
+          <ul class="inline-block ml-4">
+            {
+              session ? (
+                <SignOutForm
+                  locale={i18n.locale}
+                  translations={signOutComponentTranslations}
+                  client:load
+                />
+              ) : (
+                <HeaderLink href={signinURL}>
+                  {i18n.t("strings.signin.menu-name")}
+                </HeaderLink>
+              )
+            }
+          </ul>
+          <ul class="inline-block ml-4">
+            <HeaderLink href={translatedpath}>{otherLocale}</HeaderLink>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </nav>
+</header>

@@ -1,3 +1,44 @@
 ---
-import "@/styles/tailwind.css"
+import Container from '@/components/Container.astro'
+import '@/styles/tailwind.css'
+import { cn } from '@/utils/cn'
+import BaseHead from '@/components/BaseHead.astro'
+import TailwindIndicator from "@/components/tailwind-indicator.astro";
+
+
+type Props = {
+  title: string;
+  description?: string;
+  lang: string;
+  mainClass?: string;
+  bodyClass?: string;
+}
+
+import { getLocale } from '@/i18n/utils'
+const locale = getLocale(Astro)
+const { title, description, mainClass, bodyClass } = Astro.props as Props
 ---
+
+<!doctype html>
+<html lang={locale} class="scroll-smooth bg-background text-foreground">
+  <head>
+    <BaseHead title={title} description={description ?? ''} />
+  </head>
+  <body class={cn("flex flex-col min-h-screen", bodyClass)}>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-T7CDGRPZ"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"></iframe></noscript
+    >
+    <!-- End Google Tag Manager (noscript) -->
+    <Container>
+        <main class={cn(mainClass)}>
+            <slot />
+            <TailwindIndicator />
+        </main>
+    </Container>
+  </body>
+</html>

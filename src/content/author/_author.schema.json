@@ -1,0 +1,92 @@
+{
+  "type": "object",
+  "properties": {
+    "firstname": {
+      "type": "string"
+    },
+    "lastname": {
+      "type": "string"
+    },
+    "nikname": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "en",
+        "es",
+        "uk",
+        "ru",
+        "de",
+        "fr",
+        "nl"
+      ]
+    },
+    "avatar": {
+      "type": "object",
+      "properties": {
+        "src": {
+          "type": "string"
+        },
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "png",
+            "jpg",
+            "jpeg",
+            "tiff",
+            "webp",
+            "gif",
+            "svg",
+            "avif"
+          ]
+        }
+      },
+      "required": [
+        "src",
+        "width",
+        "height",
+        "format"
+      ],
+      "additionalProperties": false
+    },
+    "social": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "not": {}
+          },
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "icon": {
+                "type": "string"
+              },
+              "link": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "firstname",
+    "lastname",
+    "avatar"
+  ],
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

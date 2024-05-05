@@ -1,0 +1,55 @@
+{
+    "index": {
+        "meta": {
+            "title": "The home page title",
+            "description": "The home page description"
+        },
+        "menu-name": "Home",
+        "title": "Home page",
+        "hi": "Hello {username}. Today's date is {today}",
+        "counter": "Counter",
+        "text1": "Load and hydrate the component JavaScript immediately on page load.",
+        "text2": "Load and hydrate the component JavaScript once the component has entered the user’s viewport."
+    },
+    "about": {
+        "meta": {
+            "title": "The about page title",
+            "description": "The about page description"
+        },
+        "menu-name": "About",
+        "title": "About page"
+    },
+    "secret": {
+        "meta": {
+            "title": "The secret page title",
+            "description": "The secret page description"
+        },
+        "menu-name": "Secret",
+        "title": "Secret page"
+    },
+    "signin": {
+        "meta": {
+            "title": "The about page signin",
+            "description": "The about page descsigninription"
+        },
+        "menu-name": "Sign in",
+        "title": "Signin page",
+        "component": {
+            "email": "Your email",
+            "password": "Your password",
+            "button": "Sign in"
+        }
+    },
+    "signout": {
+        "component": {
+            "button": "Sign out"
+        }
+    },
+    "404": {
+        "meta": {
+            "title": "The 404 page title",
+            "description": "The 404 page description"
+        },
+        "title": "404 page"
+    }
+}

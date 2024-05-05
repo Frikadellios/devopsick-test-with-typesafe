@@ -1,27 +1,27 @@
 ---
-import { DEFAULT_LANG, LOCALES } from "./utils"
+import { BaseLocale, Locales } from "@/i18n/i18n-types"
 
 const [, , ...path] = Astro.url.pathname.split("/")
 ---
 
 <link
   rel="alternate"
-  href={`${Astro.url.origin}${DEFAULT_LANG}/${path.join("/")}`}
+  href={`${Astro.url.origin}${BaseLocale.locale}/${path.join("/")}`}
   hreflang="x-default"
 />
 {
-  Object.keys(LOCALES).map((l) => (
+  Object.keys(Locales).map((l) => (
     <link
       rel="alternate"
       href={`${Astro.url.origin}${l}/${path.join("/")}`}
-      hreflang={LOCALES[l as keyof typeof LOCALES]}
+      hreflang={Locales[l as keyof typeof Locales]}
     />
   ))
 }
 
-<meta property="og:locale" content={LOCALES[DEFAULT_LANG]} />
+<meta property="og:locale" content={locales[DEFAULT_LANG]} />
 {
-  Object.keys(LOCALES).map((l) => {
+  Object.keys(locales).map((l) => {
     if (l === DEFAULT_LANG) return
     return (
       <meta

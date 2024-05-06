@@ -95,6 +95,112 @@ body {
   @apply bg-background text-foreground;
 }
 
+html {
+    scroll-behavior: smooth;
+    font-family: 'Sample Font', Arial;
+}
+html,
+body {
+    @apply text-black;
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+}
+
+* {
+    font-variant-ligatures: none;
+}
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.container {
+    @apply px-5 mx-auto;
+
+    max-width: 1264px; /* actual: 1224px (without px-5) */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+img:not([src]):not([srcset]) {
+    visibility: hidden;
+}
+[data-loading] {
+    display: none;
+}
+
+.htmx-request > .hide-while-request {
+    @apply hidden;
+}
+.dropdown {
+    @apply relative inline-block text-foreground;
+}
+.content {
+    z-index: 1;
+    @apply absolute block bottom-0 -translate-y-11 -left-6;
+}
+.content-inner {
+    @apply rounded-2xl p-2 bg-white flex flex-col overflow-hidden;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    min-width: 200px;
+}
+
+form {
+    @apply flex flex-col;
+}
+form > input {
+    @apply mb-4;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner:before {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    margin-left: -10px;
+    border-radius: 50%;
+    border-top: 2px solid #fff;
+    border-right: 2px solid transparent;
+    animation: spinner 0.6s linear infinite;
+}
+
+.wrap {
+    @apply inline-block px-2 pr-3 py-3 mb-4 h-14 border;
+    min-width: 255px;
+    border-radius: 32px;
+}
+
+.wrap {
+    @apply fixed bottom-4 left-4 bg-white px-5 py-3 rounded-3xl max-w-sm z-50 border flex;
+}
+.icon {
+    @apply mr-2 mt-1;
+}
+
 .container {
   margin: 0 auto;
   padding: 0 2rem;

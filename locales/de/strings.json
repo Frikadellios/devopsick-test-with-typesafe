@@ -6,7 +6,7 @@
         },
         "menu-name": "Home",
         "title": "Home page",
-        "hi": "Hello {username}. Today's date is {today}",
+        "hi": "Guten Tag {username}. Today's date is {today}",
         "counter": "Counter",
         "text1": "Load and hydrate the component JavaScript immediately on page load.",
         "text2": "Load and hydrate the component JavaScript once the component has entered the user’s viewport."

@@ -1,18 +1,8 @@
 ---
-// code fences
-import Layout from "../layouts/Layout.astro";
-import I18n from "@/i18n";
-const i18n = new I18n(Astro.currentLocale);
----
+import { Routes } from '@/utils/routing'
+import { getLocale } from '@/i18n/utils'
 
-<Layout
-  title={i18n.t("strings.404.title")}
-  description="Lorem ipsum dolor sit amet"
-  i18n={i18n}
->
-  <section class="bg-slate-50">
-    <div class="md:container md:mx-auto px-4 py-10">
-      <h1 class="text-4xl">{i18n.t("strings.404.title")}</h1>
-    </div>
-  </section>
-</Layout>
+const locale = getLocale(Astro)
+// Keep 404 page as edge case here not in middleware
+return Astro.redirect(`/${locale}${Routes.HOME}`)
+---

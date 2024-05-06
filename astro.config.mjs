@@ -7,6 +7,7 @@ import sitemap from "@astrojs/sitemap";
 import { SITE_URL } from './src/constants';
 import { remarkReadingTime } from './src/utils/readTime.mjs';
 import node from "@astrojs/node";
+import svelte from '@astrojs/svelte';
 
 // https://astro.build/config
 export default defineConfig({
@@ -40,7 +41,10 @@ export default defineConfig({
       }
     }), tailwindcss()]
   },
-  integrations: [react(), mdx({
+  integrations: [
+    react(),
+    svelte(),
+    mdx({
     syntaxHighlight: 'shiki',
     shikiConfig: {
       theme: 'material-theme-palenight',
